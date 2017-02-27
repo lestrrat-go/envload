@@ -104,7 +104,6 @@ func (l *Loader) Iterator(ctx context.Context, options ...Option) *Iterator {
 
 	ch := make(chan *iterItem)
 	ex := make(chan *iterItem)
-	defer close(ex)
 
 	go func(m []iterItem, ch, ex chan *iterItem) {
 		defer close(ch)
@@ -136,28 +135,31 @@ func (l *Loader) Iterator(ctx context.Context, options ...Option) *Iterator {
 	// meanwhile, load from envdir, if available
 	if loadEnvdir && l.envdir != "" {
 		if fi, err := os.Stat(l.envdir); err == nil && fi.IsDir() {
-			filepath.Walk(l.envdir, func(path string, fi os.FileInfo, err error) error {
-				// Ignore errors
-				if err != nil {
+			go func() {
+				defer close(ex)
+				filepath.Walk(l.envdir, func(path string, fi os.FileInfo, err error) error {
+					// Ignore errors
+					if err != nil {
+						return nil
+					}
+
+					// Do not recurse into directories
+					if fi.IsDir() && l.envdir != path {
+						return filepath.SkipDir
+					}
+
+					buf, err := ioutil.ReadFile(path)
+					if err != nil {
+						return nil
+					}
+
+					ex <- &iterItem{
+						key:   filepath.Base(path),
+						value: string(bytes.TrimSpace(buf)),
+					}
 					return nil
-				}
-
-				// Do not recurse into directories
-				if fi.IsDir() && l.envdir != path {
-					return filepath.SkipDir
-				}
-
-				buf, err := ioutil.ReadFile(path)
-				if err != nil {
-					return nil
-				}
-
-				ex <- &iterItem{
-					key:   filepath.Base(path),
-					value: string(bytes.TrimSpace(buf)),
-				}
-				return nil
-			})
+				})
+			}()
 		}
 	}
 
