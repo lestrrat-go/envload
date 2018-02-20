@@ -1,6 +1,6 @@
 package envload
 
-import "golang.org/x/net/context"
+import "context"
 
 func (o *option) Name() string {
 	return o.name

@@ -2,12 +2,11 @@ package envload
 
 import (
 	"bytes"
+	"context"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
-
-	"golang.org/x/net/context"
 )
 
 func (e *sysenv) Clearenv() {

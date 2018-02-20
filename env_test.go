@@ -1,13 +1,13 @@
 package envload_test
 
 import (
+	"context"
 	"os"
 	"testing"
 	"time"
 
 	envload "github.com/lestrrat-goenvload"
 	"github.com/stretchr/testify/assert"
-	"golang.org/x/net/context"
 )
 
 func TestIter(t *testing.T) {
