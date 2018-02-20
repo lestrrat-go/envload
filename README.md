@@ -1,4 +1,4 @@
-# go-envload
+# envload
 
 Restore environment variables, so you can break 'em
 

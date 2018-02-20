@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	envload "github.com/lestrrat/go-envload"
+	envload "github.com/lestrrat-goenvload"
 )
 
 func Example() {
