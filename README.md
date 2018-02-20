@@ -2,6 +2,10 @@
 
 Restore environment variables, so you can break 'em
 
+[![Build Status](https://travis-ci.org/lestrrat-go/envload.png?branch=master)](https://travis-ci.org/lestrrat-go/envload)
+
+[![GoDoc](https://godoc.org/github.com/lestrrat-go/envload?status.svg)](https://godoc.org/github.com/lestrrat-go/envload)
+
 # SYNOPSIS
 
 # DESCRIPTION
